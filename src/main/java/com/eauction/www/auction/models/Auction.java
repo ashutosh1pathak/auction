@@ -13,6 +13,10 @@ public class Auction {
     private Long startTimestamp;
     private Long stopTimestamp;
     private String status;
+    private boolean isResultDeclared;
+    private boolean isCancelled;
+    private String reasonforCancellation;
+    private Long timeOfCancellation;
 
 
     public String getAuctionId() {

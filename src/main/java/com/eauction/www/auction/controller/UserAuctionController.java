@@ -19,7 +19,7 @@ public class UserAuctionController {
     public AuctionService auctionService;
 
 
-    @GetMapping(value = "   ")
+    @GetMapping(value = "/abc/{userId}")
     public List<Auction> getAuctions(@PathVariable String userId)
     {
         return auctionService.getAuctions(userId);

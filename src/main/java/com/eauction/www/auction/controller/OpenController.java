@@ -1,7 +1,10 @@
 package com.eauction.www.auction.controller;
 
+import com.eauction.www.auction.dto.UserEntity;
 import com.eauction.www.auction.models.Auction;
 import com.eauction.www.auction.models.MyUserDetails;
+import com.eauction.www.auction.models.UserRegistration;
+import com.eauction.www.auction.repo.UserRepository;
 import com.eauction.www.auction.request.models.AuthenticateRequest;
 import com.eauction.www.auction.response.models.AuthenticateResponse;
 import com.eauction.www.auction.service.MyUserDetailsService;
@@ -12,13 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OpenController {
@@ -32,21 +34,38 @@ public class OpenController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @GetMapping("/auctions")
-    public Auction getAuctions()
-    {
-        return Utility.getAuctions().get(0);
+    public Auction getAuctions(@RequestParam String status) {
+        return Utility.getAuctions(status).get(0);
+    }
+
+    @PostMapping("/registration")
+    public String registration(@RequestBody UserRegistration userRegistration) {
+
+        UserEntity userEntity = userRepository.save(Utility.convertToUserEntity(userRegistration , passwordEncoder , Boolean.FALSE));
+        if (userEntity != null) {
+            return userEntity.getUsername();
+        } else {
+            throw new RuntimeException("Unable To Register");
+        }
+
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticateResponse> auntenticate(@RequestBody AuthenticateRequest authenticateRequest) throws Exception
-    {
+    public ResponseEntity<AuthenticateResponse> authenticate(@RequestBody AuthenticateRequest authenticateRequest) throws Exception {
         try {
             authenticationManager.authenticate
-                    (new UsernamePasswordAuthenticationToken(authenticateRequest.getUsername() , authenticateRequest.getPassword()));
-        }catch (BadCredentialsException bce)
-        {
-            throw new Exception("Bad Credential",bce);
+                    (new UsernamePasswordAuthenticationToken(authenticateRequest.getUsername(), authenticateRequest.getPassword()));
+        } catch (BadCredentialsException bce) {
+            throw new RuntimeException("Bad Credential", bce);
+        } catch (LockedException le) {
+            throw new RuntimeException("User Account Is Locked.Please contact administrator", le);
         }
 
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(authenticateRequest.getUsername());

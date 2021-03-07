@@ -1,12 +1,16 @@
 package com.eauction.www.auction.util;
 
+import com.eauction.www.auction.dto.UserEntity;
 import com.eauction.www.auction.models.Auction;
 import com.eauction.www.auction.models.Item;
+import com.eauction.www.auction.models.UserRegistration;
 import org.apache.commons.math3.util.Precision;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Utility {
 
@@ -14,6 +18,14 @@ public class Utility {
     {
 
         return createSampleAuctions();
+
+    }
+
+
+    public static List<Auction> getAuctions(String status)
+    {
+
+        return createSampleAuctions(status);
 
     }
 
@@ -26,6 +38,12 @@ public class Utility {
             auctions.add(createSampleAuction());
         }
         return auctions;
+
+    }
+
+    private static List<Auction> createSampleAuctions(String status) {
+
+       return  createSampleAuctions().parallelStream().filter(auction -> auction.getStatus().equals(status)).collect(Collectors.toList());
 
     }
 
@@ -44,7 +62,6 @@ public class Utility {
         auction.setItems(getSampleItems(auctionId));
         auction.setStartTimestamp(startT);
         auction.setStopTimestamp(stopT);
-
 
         return auction;
     }
@@ -107,5 +124,23 @@ public class Utility {
         return timestamp +  Long.valueOf(day * 24 * 60 * 60 * 1000);
     }
 
+    public static UserEntity convertToUserEntity(UserRegistration userRegistration , PasswordEncoder passwordEncoder , boolean isAdmin) {
 
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(userRegistration.getUserName());
+        userEntity.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
+        userEntity.setRoles(isAdmin?"ROLE_ADMIN":"ROLE_USER");
+        userEntity.setActive(Boolean.TRUE);
+        userEntity.setFirstname(userRegistration.getFirstName());
+        userEntity.setMiddlename(userRegistration.getMiddleName());
+        userEntity.setLastname(userRegistration.getLastname());
+        userEntity.setContactNumber(userRegistration.getContactNumber());
+        userEntity.setAddress(userRegistration.getAddress());
+        userEntity.setEmailId(userRegistration.getEmailId());
+        userEntity.setOrgType(userRegistration.getOrgType());
+        userEntity.setCreatedTime(System.currentTimeMillis());
+        userEntity.setModifiedTime(System.currentTimeMillis());
+
+        return userEntity;
+    }
 }
