@@ -33,6 +33,7 @@ public class UserEntity {
     private String orgType;
     private Long createdTime;
     private Long modifiedTime;
+    private String createdBy;
 
 
     public Integer getId() {
@@ -145,5 +146,13 @@ public class UserEntity {
 
     public void setModifiedTime(Long modifiedTime) {
         this.modifiedTime = modifiedTime;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

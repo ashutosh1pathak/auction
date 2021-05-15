@@ -1,5 +1,6 @@
 package com.eauction.www.auction.controller;
 
+import com.eauction.www.auction.security.RequestContext;
 import com.eauction.www.auction.service.AuctionService;
 import com.eauction.www.auction.models.Auction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,16 @@ public class UserAuctionController {
     @Autowired
     public AuctionService auctionService;
 
+    @Autowired
+    public RequestContext requestContext;
 
-    @GetMapping(value = "/abc/{userId}")
-    public List<Auction> getAuctions(@PathVariable String userId)
+
+
+
+    @GetMapping(value = "/auctions/{auctionId}")
+    public Auction getAuctions(@PathVariable String auctionId)
     {
-        return auctionService.getAuctions(userId);
-    }
-
-
-    @GetMapping(value = "/{userId}/auctions/{auctionId}")
-    public Auction getAuctions(@PathVariable String userId , @PathVariable String auctionId)
-    {
-        return auctionService.getAuctions(userId,auctionId);
+        return auctionService.getAuctions(requestContext.getUsername(),auctionId);
     }
 
 

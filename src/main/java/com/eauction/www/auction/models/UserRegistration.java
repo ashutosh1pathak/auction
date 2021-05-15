@@ -12,6 +12,7 @@ public class UserRegistration {
     private String emailId;
     private String orgType;
     private boolean isAdmin;
+    private String createdBy;
 
 
     public String getUserName() {
@@ -92,5 +93,13 @@ public class UserRegistration {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

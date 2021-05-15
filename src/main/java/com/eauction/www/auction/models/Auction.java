@@ -5,7 +5,8 @@ import java.util.Objects;
 
 public class Auction {
 
-    private String userId;
+    private String userName;
+    private String createdBy;
     private String auctionId;
     private String auctionName;
     private String auctionDescription;
@@ -15,7 +16,7 @@ public class Auction {
     private String status;
     private boolean isResultDeclared;
     private boolean isCancelled;
-    private String reasonforCancellation;
+    private String reasonForCancellation;
     private Long timeOfCancellation;
 
 
@@ -75,12 +76,52 @@ public class Auction {
         this.status = status;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public boolean isResultDeclared() {
+        return isResultDeclared;
+    }
+
+    public void setResultDeclared(boolean resultDeclared) {
+        isResultDeclared = resultDeclared;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    public String getReasonForCancellation() {
+        return reasonForCancellation;
+    }
+
+    public void setReasonForCancellation(String reasonForCancellation) {
+        this.reasonForCancellation = reasonForCancellation;
+    }
+
+    public Long getTimeOfCancellation() {
+        return timeOfCancellation;
+    }
+
+    public void setTimeOfCancellation(Long timeOfCancellation) {
+        this.timeOfCancellation = timeOfCancellation;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

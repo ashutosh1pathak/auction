@@ -124,7 +124,7 @@ public class Utility {
         return timestamp +  Long.valueOf(day * 24 * 60 * 60 * 1000);
     }
 
-    public static UserEntity convertToUserEntity(UserRegistration userRegistration , PasswordEncoder passwordEncoder , boolean isAdmin) {
+    public static UserEntity convertToUserEntity(UserRegistration userRegistration , PasswordEncoder passwordEncoder , boolean isAdmin , String createdByUser) {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(userRegistration.getUserName());
@@ -140,6 +140,7 @@ public class Utility {
         userEntity.setOrgType(userRegistration.getOrgType());
         userEntity.setCreatedTime(System.currentTimeMillis());
         userEntity.setModifiedTime(System.currentTimeMillis());
+        userEntity.setCreatedBy(createdByUser);
 
         return userEntity;
     }

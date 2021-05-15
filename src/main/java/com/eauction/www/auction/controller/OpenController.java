@@ -7,6 +7,7 @@ import com.eauction.www.auction.models.UserRegistration;
 import com.eauction.www.auction.repo.UserRepository;
 import com.eauction.www.auction.request.models.AuthenticateRequest;
 import com.eauction.www.auction.response.models.AuthenticateResponse;
+import com.eauction.www.auction.security.RequestContext;
 import com.eauction.www.auction.service.MyUserDetailsService;
 import com.eauction.www.auction.util.JwtUtil;
 import com.eauction.www.auction.util.Utility;
@@ -40,6 +41,9 @@ public class OpenController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    RequestContext requestContext;
+
     @GetMapping("/auctions")
     public Auction getAuctions(@RequestParam String status) {
         return Utility.getAuctions(status).get(0);
@@ -48,7 +52,7 @@ public class OpenController {
     @PostMapping("/registration")
     public String registration(@RequestBody UserRegistration userRegistration) {
 
-        UserEntity userEntity = userRepository.save(Utility.convertToUserEntity(userRegistration , passwordEncoder , Boolean.FALSE));
+        UserEntity userEntity = userRepository.save(Utility.convertToUserEntity(userRegistration , passwordEncoder , Boolean.FALSE , requestContext.getUsername()));
         if (userEntity != null) {
             return userEntity.getUsername();
         } else {

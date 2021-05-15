@@ -1,5 +1,6 @@
 package com.eauction.www.auction.filter;
 
+import com.eauction.www.auction.security.RequestContext;
 import com.eauction.www.auction.service.MyUserDetailsService;
 import com.eauction.www.auction.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,6 +26,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    RequestContext requestContext;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -48,6 +52,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
+
+            System.out.println(userDetails.getAuthorities().getClass());
+            requestContext.setUsername(userDetails.getUsername());
+            requestContext.setAdmin(!CollectionUtils.isEmpty(userDetails.getAuthorities())?
+                    userDetails.getAuthorities().stream().filter(auth-> auth.toString().equals("ROLE_ADMIN")).findFirst().isPresent():false);
+
         }
 
         filterChain.doFilter(httpServletRequest,httpServletResponse);

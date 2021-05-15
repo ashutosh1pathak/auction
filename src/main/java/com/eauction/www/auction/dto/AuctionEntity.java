@@ -32,4 +32,7 @@ public class AuctionEntity {
 
     @Column (nullable = false)
     private Long lastModifiedOn;
+
+    @Column(nullable = false)
+    private String createdBy;
 }
