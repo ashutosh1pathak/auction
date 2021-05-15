@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Auction {
 
-    private String userName;
+    private String username;
     private String createdBy;
     private String auctionId;
     private String auctionName;
@@ -13,6 +13,7 @@ public class Auction {
     private List<Item> items;
     private Long startTimestamp;
     private Long stopTimestamp;
+    private Long createdTimestamp;
     private String status;
     private boolean isResultDeclared;
     private boolean isCancelled;
@@ -76,12 +77,12 @@ public class Auction {
         this.status = status;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public boolean isResultDeclared() {
@@ -122,6 +123,14 @@ public class Auction {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Long getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Long createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
     }
 
     @Override

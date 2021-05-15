@@ -45,14 +45,14 @@ public class OpenController {
     RequestContext requestContext;
 
     @GetMapping("/auctions")
-    public Auction getAuctions(@RequestParam String status) {
-        return Utility.getAuctions(status).get(0);
+    public Auction getAuctions() {
+        return Utility.createSampleAuction();
     }
 
     @PostMapping("/registration")
     public String registration(@RequestBody UserRegistration userRegistration) {
 
-        UserEntity userEntity = userRepository.save(Utility.convertToUserEntity(userRegistration , passwordEncoder , Boolean.FALSE , requestContext.getUsername()));
+        UserEntity userEntity = userRepository.save(Utility.convertToUserEntity(userRegistration, passwordEncoder, Boolean.FALSE, requestContext.getUsername()));
         if (userEntity != null) {
             return userEntity.getUsername();
         } else {
@@ -79,6 +79,5 @@ public class OpenController {
 
 
     }
-
 
 }

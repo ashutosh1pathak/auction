@@ -20,22 +20,24 @@ public class AdminAuctionController {
     @Autowired
     public AuctionService auctionService;
 
-
-
-
-
-
+    /**
+     * Get all auction till date.(have to be sorted in descending order w.r.t date)
+     * Will gonna be very heavy operation and huge response.
+     * Make it lazy load for items in auction
+     * @return
+     */
     @GetMapping(value = "/auctions")
     public List<Auction> getAuctions()
     {
         return auctionService.getAuctions();
     }
 
-    @PostMapping(value="/auctions")
-    public Auction createAuction(@RequestBody Auction auction)
-    {
-        return auctionService.createAuction(auction);
-    }
+
+
+
+
+
+
 
 
 

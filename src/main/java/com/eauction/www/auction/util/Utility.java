@@ -106,6 +106,13 @@ public class Utility {
         return itemId;
     }
 
+    public static String generateUniqueBidId()
+    {
+        UUID uuid = UUID.randomUUID();
+        String itemId = uuid.toString().replace("-","");
+        return itemId;
+    }
+
 
     public static Integer generateRandomRangeInteger(Integer minimum , Integer maximum)
     {
@@ -143,5 +150,20 @@ public class Utility {
         userEntity.setCreatedBy(createdByUser);
 
         return userEntity;
+    }
+
+    public static void createAndPopulateAuctionId(Auction auction) {
+
+        String auctionId = generateUniqueAuctionId();
+        auction.setAuctionId(auctionId);
+        auction.getItems().stream().forEach(item->{
+            item.setAuctionId(auctionId);
+            item.setItemId(generateUniqueItemId());
+        });
+
+    }
+
+    public static void populateCurrentTime(Auction auction) {
+        auction.setCreatedTimestamp(System.currentTimeMillis());
     }
 }

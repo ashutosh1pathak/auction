@@ -12,19 +12,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/useradmin")
 public class UserAdminController {
 
     @Autowired
-    RequestContext requestContext;
-    @Autowired
     public AuctionService auctionService;
 
+    @PostMapping(value = "/auction")
     public Auction createAuction(@RequestBody Auction auction){
-        auction.setUserName(requestContext.getUsername());
         return auctionService.createAuction(auction);
-
     }
+
+
 
 }
